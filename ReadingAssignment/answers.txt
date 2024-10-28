@@ -1,0 +1,35 @@
+Câu hỏi 1: If you create a constructor method to build a DVD by title then create a constructor method to build a DVD by category. Does JAVA allow you to do this?
+Trả lời:
+	Java cho phép tạo nhiều constructor trong cùng một lớp với các tham số khác nhau thông qua tính năng method overloading (nạp chồng phương thức). Điều này có nghĩa là bạn có thể tạo các constructor với các danh sách tham số khác nhau trong cùng một lớp mà không gây ra lỗi. Trong trường hợp này, bạn có thể tạo một constructor chỉ với title, một constructor khác với category, hoặc một constructor có cả title và category. Java sẽ chọn constructor phù hợp dựa trên số lượng và kiểu dữ liệu của các tham số khi bạn khởi tạo đối tượng.
+
+
+Câu hỏi 2: Why getter and setter methods are evil?
+Trả lời: 
+	Các phương thức getter và setter đôi khi được coi là "có hại" trong lập trình hướng đối tượng (OOP) vì chúng có thể vi phạm các nguyên tắc quan trọng của đóng gói và trừu tượng, dẫn đến mã khó bảo trì hơn, dễ lỗi và gắn kết chặt chẽ. Dưới đây là một số lý do tại sao việc lạm dụng getters và setters có thể gây ra vấn đề:
+
+1. Vi phạm Nguyên tắc Đóng gói
+Đóng gói là một khái niệm cơ bản trong OOP, liên quan đến việc gói gọn dữ liệu (thuộc tính) và các phương thức hoạt động trên dữ liệu đó trong một đơn vị hoặc lớp duy nhất. Nó cũng bao gồm việc hạn chế truy cập trực tiếp vào một số thành phần của đối tượng, điều này quan trọng để bảo vệ tính toàn vẹn của đối tượng.
+
+Vấn đề với Getters/Setters: Cung cấp các getters và setters công khai làm lộ ra biểu diễn nội bộ của một đối tượng. Nó cho phép mã bên ngoài thay đổi trạng thái của đối tượng trực tiếp, có thể dẫn đến hành vi không mong muốn và làm cho việc thực thi các quy tắc bất biến hoặc xác thực trở nên khó khăn hơn.
+2. Phá vỡ Trừu tượng hóa
+Trừu tượng hóa có nghĩa là chỉ hiển thị các chi tiết cần thiết của một đối tượng và ẩn đi các chi tiết triển khai phức tạp.
+
+Vấn đề với Getters/Setters: Khi bạn lộ ra các trường nội bộ thông qua getters và setters, bạn đang tiết lộ cách đối tượng lưu trữ dữ liệu của nó. Điều này giảm mức độ trừu tượng và có thể làm cho mã dễ vỡ hơn vì thay đổi trong biểu diễn nội bộ có thể yêu cầu thay đổi trong mã bên ngoài dựa vào các getters và setters đó.
+3. Khuyến khích Gắn kết Chặt chẽ
+Gắn kết chặt chẽ đề cập đến tình huống các lớp phụ thuộc nhiều vào nhau, làm cho hệ thống kém mô-đun và khó bảo trì hơn.
+
+Vấn đề với Getters/Setters: Nếu nhiều lớp dựa vào việc truy cập trực tiếp vào các trường của một đối tượng thông qua getters và setters, thay đổi các trường đó có thể có hiệu ứng lan truyền khắp mã nguồn. Sự gắn kết chặt chẽ này làm cho việc sửa đổi hoặc mở rộng hệ thống trở nên khó khăn.
+4. Dẫn đến Mô hình Miền Nghèo Nàn (Anemic Domain Models)
+Mô hình miền nghèo nàn là khi các lớp chỉ là các container dữ liệu mà không có hành vi có ý nghĩa, giống như lập trình thủ tục hơn là OOP.
+
+Vấn đề với Getters/Setters: Việc lạm dụng getters và setters có thể dẫn đến các lớp ít hoặc không có hành vi, với logic nghiệp vụ phân tán khắp nơi thay vì được đóng gói trong các đối tượng.
+5. Vi phạm Nguyên tắc Luật của Demeter
+Luật của Demeter, hoặc nguyên tắc ít kiến thức nhất, cho rằng một module không nên biết về các chi tiết nội bộ của các đối tượng mà nó thao tác.
+
+Vấn đề với Getters/Setters: Việc lộ ra các trường nội bộ khuyến khích các lớp khác thao tác trực tiếp vào nội bộ của một đối tượng, dẫn đến mã khó hiểu và bảo trì.
+6. Giảm Tính Bảo trì và Linh hoạt
+Vấn đề với Getters/Setters: Khi các trường nội bộ được lộ ra, thay đổi các chi tiết triển khai (như thay đổi kiểu dữ liệu của trường) có thể đòi hỏi thay đổi trong tất cả mã bên ngoài truy cập các trường đó, giảm tính linh hoạt.
+7. Cản trở Hành vi Đóng gói
+Các đối tượng nên quản lý trạng thái và hành vi của chính chúng, cung cấp các phương thức có ý nghĩa trong ngữ cảnh vai trò của đối tượng.
+
+Vấn đề với Getters/Setters: Bằng cách lộ ra các trường, bạn buộc mã bên ngoài phải quản lý trạng thái của đối tượng, điều mà lẽ ra nên là trách nhiệm của đối tượng.
