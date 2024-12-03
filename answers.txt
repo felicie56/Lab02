@@ -1,0 +1,131 @@
+
+1. Các lớp nào là tập hợp của các lớp khác? Kiểm tra tất cả các constructor của các lớp để xem chúng có khởi tạo các phần của chúng không?
+
+Aggregate classes: Trong một hệ thống lập trình hướng đối tượng, một lớp được gọi là aggregate khi nó chứa các đối tượng của các lớp khác dưới dạng các trường (fields) hoặc thuộc tính (properties). Một lớp sẽ trở thành aggregate của các lớp khác nếu nó chứa các đối tượng của lớp khác trong các trường của mình.
+Các lớp trong AimsProject có thể là aggregates:
+Cart: Nếu lớp Cart chứa các đối tượng của lớp Media (hoặc các lớp con của Media như Book, DigitalVideoDisc, CompactDisc), thì Cart là một aggregate của các lớp Media hoặc các lớp con của nó.
+Order: Nếu lớp Order chứa các đối tượng của lớp Cart hoặc Media, nó cũng sẽ là một aggregate.
+CompactDisc: Lớp CompactDisc có thể là aggregate nếu nó chứa các đối tượng Track.
+Kiểm tra các constructor:
+
+Khi kiểm tra các constructor của lớp, bạn cần đảm bảo rằng chúng khởi tạo các trường (fields) là các đối tượng của các lớp khác. Nếu constructor khởi tạo các trường như vậy, thì lớp đó là một aggregate.
+Ví dụ, constructor của lớp Cart có thể nhận danh sách các Media và lưu trữ chúng, điều này có thể được coi là việc khởi tạo các "phần tử" của lớp Cart.
+
+2. Chuyện gì sẽ xảy ra nếu đối tượng truyền vào không phải là một thể hiện của lớp Media khi ghi đè phương thức equals() trong lớp Media?
+
+Khi bạn ghi đè phương thức equals() trong lớp Media, nếu đối tượng được truyền vào không phải là một instance của lớp Media, bạn cần phải xử lý tình huống này một cách hợp lý. Cụ thể, trong phương thức equals(), bạn sẽ kiểm tra xem đối tượng truyền vào có phải là một instance của lớp Media hay không. Nếu không, phương thức sẽ trả về false, vì một đối tượng khác kiểu sẽ không thể coi là "bằng" với đối tượng Media hiện tại.
+
+Giải thích chi tiết:
+Khi bạn cài đặt phương thức equals() trong Java, bạn cần đảm bảo rằng nó so sánh các đối tượng của cùng một lớp hoặc các lớp con của nó. Nếu đối tượng truyền vào không phải là một instance của lớp bạn đang cài đặt (trong trường hợp này là Media), phương thức equals() sẽ trả về false, vì rõ ràng là hai đối tượng khác kiểu sẽ không thể bằng nhau.
+
+Dưới đây là ví dụ về cách cài đặt phương thức equals() trong lớp Media và lớp Track để đáp ứng yêu cầu của bài toán.
+
+Cài đặt phương thức equals() trong lớp Media:
+
+@Override
+public boolean equals(Object obj) {
+    // Nếu đối tượng truyền vào là null hoặc không phải là một instance của Media
+    if (obj == null || !(obj instanceof Media)) {
+        return false;
+    }
+    
+    // Ép kiểu đối tượng obj thành Media để so sánh
+    Media otherMedia = (Media) obj;
+    
+    // So sánh các thuộc tính (title) của đối tượng Media
+    return this.title != null && this.title.equals(otherMedia.title);
+}
+Giải thích:
+Kiểm tra đối tượng null và kiểu đối tượng: Đầu tiên, chúng ta kiểm tra nếu đối tượng truyền vào là null hoặc không phải là một instance của lớp Media. Trong trường hợp này, phương thức trả về false.
+Ép kiểu đối tượng: Sau khi chắc chắn rằng đối tượng là Media, chúng ta ép kiểu obj thành kiểu Media để có thể truy cập các thuộc tính của đối tượng đó.
+So sánh thuộc tính: Cuối cùng, chúng ta so sánh thuộc tính title của đối tượng hiện tại với đối tượng otherMedia. Nếu chúng giống nhau, phương thức sẽ trả về true, nghĩa là hai đối tượng Media này là giống nhau.
+Cài đặt phương thức equals() trong lớp Track:
+
+@Override
+public boolean equals(Object obj) {
+    // Nếu đối tượng truyền vào là null hoặc không phải là một instance của Track
+    if (obj == null || !(obj instanceof Track)) {
+        return false;
+    }
+    
+    // Ép kiểu đối tượng obj thành Track để so sánh
+    Track otherTrack = (Track) obj;
+    
+    // So sánh title và length của các track
+    return this.title != null && this.title.equals(otherTrack.title) 
+           && this.length == otherTrack.length;
+}
+Giải thích:
+Kiểm tra đối tượng null và kiểu đối tượng: Giống như trong lớp Media, ta kiểm tra nếu đối tượng truyền vào là null hoặc không phải là một instance của Track. Nếu là vậy, trả về false.
+Ép kiểu đối tượng: Nếu đối tượng là một instance của lớp Track, ta ép kiểu đối tượng thành Track để so sánh các thuộc tính.
+So sánh thuộc tính: Sau đó, chúng ta so sánh cả title và length của track để xác định chúng có giống nhau hay không.
+
+
+3. Lớp nào nên triển khai interface Comparable?
+Lớp Media hoặc các lớp con của nó (ví dụ: DigitalVideoDisc, Book, CompactDisc,...) nên thực hiện giao diện Comparable. Vì chúng đều có các thuộc tính chung như title, cost,... và cần có khả năng sắp xếp, do đó, một trong các lớp này sẽ cần cài đặt compareTo() để xác định cách so sánh các đối tượng Media.
+
+Nếu bạn muốn mỗi loại Media có thể tự sắp xếp, bạn sẽ cài đặt compareTo() trong lớp Media hoặc trong từng lớp con cụ thể (ví dụ: DigitalVideoDisc sẽ cài đặt compareTo() riêng của nó).
+Nếu bạn sử dụng Comparable cho lớp Media, bạn có thể cài đặt một quy tắc sắp xếp mặc định, nhưng sẽ bị hạn chế về khả năng sắp xếp theo nhiều cách khác nhau (ví dụ: theo title, cost,...).
+
+4. Trong những lớp đó, bạn nên triển khai phương thức compareTo() như thế nào để phản ánh thứ tự mà chúng ta muốn?
+Phương thức compareTo() phải trả về một số nguyên cho biết thứ tự của đối tượng hiện tại so với một đối tượng khác:
+
+Giả sử bạn sử dụng Comparable, phương thức compareTo() sẽ cần được cài đặt như sau:
+
+Sắp xếp theo title, rồi cost: Bạn có thể so sánh title trước, và nếu chúng giống nhau, thì so sánh theo cost:
+
+
+@Override
+public int compareTo(Media other) {
+    int titleComparison = this.title.compareTo(other.title);
+    if (titleComparison != 0) {
+        return titleComparison;
+    } else {
+        return Float.compare(other.cost, this.cost);  // Sắp xếp theo cost giảm dần
+    }
+}
+Sắp xếp theo cost, rồi title: Bạn có thể so sánh cost trước, và nếu chúng giống nhau, thì so sánh theo title:
+
+@Override
+public int compareTo(Media other) {
+    int costComparison = Float.compare(other.cost, this.cost);  // Sắp xếp theo cost giảm dần
+    if (costComparison != 0) {
+        return costComparison;
+    } else {
+        return this.title.compareTo(other.title);  // Sắp xếp theo title
+    }
+}
+Trong hai ví dụ trên, chúng ta thực hiện sắp xếp theo 2 thuộc tính, nhưng chỉ có một quy tắc sắp xếp có thể được sử dụng trong compareTo(). Do đó, mỗi lớp chỉ có thể có một quy tắc sắp xếp mặc định.
+5. Chúng ta có thể có hai quy tắc sắp xếp của mục (theo tiêu đề rồi đến chi phí và theo chi phí rồi đến tiêu đề) nếu chúng ta sử dụng cách tiếp cận interface Comparable không?
+
+Không, nếu bạn sử dụng giao diện Comparable, mỗi lớp chỉ có thể có một quy tắc sắp xếp duy nhất. Điều này có nghĩa là bạn chỉ có thể quyết định sắp xếp theo title rồi cost hoặc theo cost rồi title trong compareTo(). Nếu bạn muốn có nhiều cách sắp xếp, bạn phải sử dụng Comparator, vì Comparator cho phép bạn định nghĩa nhiều cách sắp xếp khác nhau mà không cần phải thay đổi mã của lớp Media.
+
+6. Giả sử các DVD có quy tắc sắp xếp khác với các loại phương tiện khác, đó là theo tiêu đề, sau đó là độ dài giảm dần, rồi đến chi phí. Bạn sẽ sửa đổi mã của mình như thế nào để cho phép điều này?
+
+
+Nếu bạn muốn có quy tắc sắp xếp riêng cho DigitalVideoDisc (DVD), bạn cần phải cài đặt Comparable cho DigitalVideoDisc và thực hiện phương thức compareTo() khác với Media.
+
+Ví dụ, trong lớp DigitalVideoDisc, bạn có thể cài đặt compareTo() như sau:
+
+@Override
+public int compareTo(Media other) {
+    if (other instanceof DigitalVideoDisc) {
+        DigitalVideoDisc otherDVD = (DigitalVideoDisc) other;
+        
+        // Sắp xếp theo title
+        int titleComparison = this.title.compareTo(otherDVD.title);
+        if (titleComparison != 0) {
+            return titleComparison;
+        }
+
+        // Sắp xếp theo length giảm dần
+        int lengthComparison = Integer.compare(otherDVD.length, this.length);  // decreasing order
+        if (lengthComparison != 0) {
+            return lengthComparison;
+        }
+
+        // Sắp xếp theo cost
+        return Float.compare(otherDVD.cost, this.cost);  // decreasing order
+    }
+    return super.compareTo(other);  // Nếu không phải DVD, sử dụng phương thức so sánh của Media
+}
